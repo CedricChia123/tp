@@ -28,7 +28,6 @@ public class EditByNameCommandParser implements Parser<EditUserByNameCommand> {
      * Parses the given {@code String} of arguments in the context of the EditCommand
      * and returns an EditCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
-     * @return
      */
     public EditUserByNameCommand parse(String args) throws ParseException {
         requireNonNull(args);
