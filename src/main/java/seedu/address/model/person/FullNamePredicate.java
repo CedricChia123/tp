@@ -12,10 +12,6 @@ public class FullNamePredicate implements Predicate<Person> {
         this.fullName = fullName;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
     @Override
     public boolean test(Person person) {
         return person.getName().toString().equals(fullName);

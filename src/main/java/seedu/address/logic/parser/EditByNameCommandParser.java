@@ -12,15 +12,15 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-import seedu.address.logic.commands.EditUserByNameCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.address.logic.commands.EditUserByNameCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.FullNamePredicate;
 import seedu.address.model.tag.Tag;
 
 /**
- * Parses input arguments and creates a new EditCommand object
+ * Parses input arguments and creates a new EditByNameCommand object
  */
 public class EditByNameCommandParser implements Parser<EditUserByNameCommand> {
 

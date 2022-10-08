@@ -23,14 +23,14 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 /**
- * Edits the details of an existing person in the address book.
+ * Edits the details of an existing person in the address book when user provides a name.
  */
 public class EditUserByNameCommand extends Command {
 
     public static final String COMMAND_WORD = "editbyname";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person identified "
-            + "by the index number used in the displayed person list. "
+            + "by their full name. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: NAME (must be exactly the same as person's name) "
             + "[" + PREFIX_NAME + "NAME] "
@@ -50,6 +50,7 @@ public class EditUserByNameCommand extends Command {
     private final FullNamePredicate predicate;
 
     /**
+     * @param predicate condition to test if queried person has same name as that in the list
      * @param editPersonDescriptor details to edit the person with
      */
     public EditUserByNameCommand(FullNamePredicate predicate, EditCommand.EditPersonDescriptor editPersonDescriptor) {
@@ -73,7 +74,7 @@ public class EditUserByNameCommand extends Command {
             }
         }
         if (targetIndex == -1) {
-            return new CommandResult(String.format(Messages.MESSAGE_INVALID_PERSON_NAME));
+            return new CommandResult(Messages.MESSAGE_INVALID_PERSON_NAME);
         }
 
         Person personToEdit = lastShownList.get(targetIndex);
@@ -92,7 +93,8 @@ public class EditUserByNameCommand extends Command {
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditCommand.EditPersonDescriptor editPersonDescriptor) {
+    private static Person createEditedPerson(Person personToEdit, EditCommand.EditPersonDescriptor
+            editPersonDescriptor) {
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
@@ -118,8 +120,8 @@ public class EditUserByNameCommand extends Command {
 
         // state check
         EditUserByNameCommand e = (EditUserByNameCommand) other;
-        return predicate.equals((e.predicate)) &&
-                editPersonDescriptor.equals(e.editPersonDescriptor);
+        return predicate.equals((e.predicate))
+                && editPersonDescriptor.equals(e.editPersonDescriptor);
     }
 
 }
