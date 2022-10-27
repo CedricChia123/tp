@@ -74,9 +74,9 @@ public class DeleteGroupMemberCommand extends Command {
         ArrayList<PersonGroup> personGroupArrayList = personToGroup.getPersonGroups();
         ArrayList<PersonGroup> personGroupArrayListCopy = new ArrayList<>(personGroupArrayList);
         Person originalPersonBeforeEdit = new Person(
-            personToGroup.getName(), personToGroup.getPhone(), personToGroup.getEmail(),
-            personToGroup.getAddress(), personToGroup.getTags(), personToGroup.getAssignments(),
-            personGroupArrayListCopy);
+                personToGroup.getName(), personToGroup.getPhone(), personToGroup.getEmail(),
+                personToGroup.getAddress(), personToGroup.getTags(), personToGroup.getAssignments(),
+                personGroupArrayListCopy);
 
         personGroupArrayList.remove(this.personGroup);
 
@@ -85,6 +85,7 @@ public class DeleteGroupMemberCommand extends Command {
                 personToGroup.getAddress(), personToGroup.getTags(), personToGroup.getAssignments(),
                 personGroupArrayList);
 
+        editedPerson.getPersonGroups().remove(new PersonGroup(groupToDeletePerson.getName().toString()));
 
         //deletes person from the group
         Set<Person> groupMembers = new HashSet<>();
@@ -92,13 +93,25 @@ public class DeleteGroupMemberCommand extends Command {
         groupMembers.remove(originalPersonBeforeEdit);
         Group editedGroup = new Group(groupToDeletePerson.getName(), groupMembers);
 
-
-        model.setGroup(groupToDeletePerson, editedGroup);
         model.setPerson(personToGroup, editedPerson);
+        updateExistingGroups(model, originalPersonBeforeEdit, personGroup);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(String.format(MESSAGE_DELETE_MEMBER_SUCCESS, this.name, editedGroup));
     }
+
+    private void updateExistingGroups(Model model, Person currentPerson, PersonGroup group) {
+        ObservableList<Group> currGroupList = model.getGroupWithName(new GroupName(group.getGroupName()));
+        Group currGroup = currGroupList.get(0);
+
+        Set<Person> editedPersonList = new HashSet<Person>(currGroup.getMembers());
+        editedPersonList.remove(currentPerson);
+
+        Group editedGroup = new Group(currGroup.getName(), editedPersonList);
+
+        model.setGroup(currGroup, editedGroup);
+    }
+
 
     @Override
     public boolean equals(Object other) {
